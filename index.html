@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="24/7 Tarif">
+<title>24/7 Tarif</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+                 "Segoe UI", sans-serif;
+    background: #f5f7fb;
+    color: #111827;
+}
+
+.header {
+    background: linear-gradient(135deg, #071a52, #1557d6);
+    color: white;
+    padding: 28px 20px 35px;
+    border-radius: 0 0 28px 28px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 800;
+}
+
+.subtitle {
+    margin-top: 6px;
+    opacity: .85;
+    font-size: 15px;
+}
+
+.container {
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.06);
+}
+
+.card h2 {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.card p {
+    color: #667085;
+    line-height: 1.5;
+}
+
+.button {
+    width: 100%;
+    border: none;
+    border-radius: 14px;
+    padding: 16px;
+    margin-top: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    background: #1557d6;
+    color: white;
+    cursor: pointer;
+}
+
+.button.secondary {
+    background: #eef3ff;
+    color: #1557d6;
+}
+
+.option {
+    width: 100%;
+    background: white;
+    border: 2px solid #e5e7eb;
+    padding: 16px;
+    border-radius: 14px;
+    margin-top: 10px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.option:hover,
+.option.selected {
+    border-color: #1557d6;
+    background: #eef3ff;
+}
+
+.hidden {
+    display: none;
+}
+
+.result {
+    background: #eef3ff;
+    border-radius: 16px;
+    padding: 18px;
+    margin-top: 15px;
+}
+
+.result strong {
+    color: #1557d6;
+}
+
+.footer {
+    text-align: center;
+    color: #98a2b3;
+    font-size: 13px;
+    padding: 30px 10px;
+}
+
+.icon {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.back {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="logo">24/7 TARIF</div>
+    <div class="subtitle">Digitale Tarifberatung</div>
+</div>
+
+<div class="container">
+
+    <!-- STARTSEITE -->
+    <div id="home">
+
+        <div class="card">
+            <div class="icon">📱</div>
+            <h2>Willkommen bei 24/7 Tarif</h2>
+            <p>
+                Wir helfen dir dabei, den passenden Mobilfunk-
+                oder Festnetz-Tarif zu finden.
+            </p>
+
+            <button class="button" onclick="startBeratung()">
+                Tarifberatung starten
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="icon">💬</div>
+            <h2>Persönliche Beratung</h2>
+            <p>
+                Keine Ahnung, welcher Tarif zu dir passt?
+                Beantworte einfach ein paar Fragen.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🔎</div>
+            <h2>Tarif vergleichen</h2>
+            <p>
+                Finde heraus, welche Tarifart zu deinem
+                persönlichen Nutzungsverhalten passt.
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- BERATUNG -->
+    <div id="beratung" class="hidden">
+
+        <button class="back" onclick="goHome()">← Zurück</button>
+
+        <div class="card">
+
+            <h2 id="question">Was möchtest du beraten lassen?</h2>
+
+            <div id="options"></div>
+
+        </div>
+
+        <div id="resultBox" class="result hidden"></div>
+
+    </div>
+
+
+    <div class="footer">
+        © 2026 24/7 Tarif<br>
+        Digitale Tarifberatung
+    </div>
+
+</div>
+
+
+<script>
+
+let step = 0;
+
+let answers = {
+    type: "",
+    internet: "",
+    calls: "",
+    priority: ""
+};
+
+const questions = [
+
+    {
+        question: "Was möchtest du beraten lassen?",
+        options: [
+            ["📱 Mobilfunk", "mobil"],
+            ["🏠 Festnetz / Internet", "festnetz"],
+            ["📱 + 🏠 Mobilfunk & Festnetz", "beides"]
+        ]
+    },
+
+    {
+        question: "Wie viel mobiles Internet benötigst du ungefähr?",
+        options: [
+            ["🌱 Wenig – hauptsächlich WLAN", "wenig"],
+            ["📊 Mittel – Social Media & Streaming", "mittel"],
+            ["🚀 Viel – täglich Streaming & unterwegs", "viel"],
+            ["♾️ Sehr viel – ich möchte möglichst viel Datenvolumen", "sehrviel"]
+        ]
+    },
+
+    {
+        question: "Wie wichtig sind dir Telefonate?",
+        options: [
+            ["☎️ Weniger wichtig", "wenig"],
+            ["📞 Normal", "normal"],
+            ["📞 Sehr wichtig", "sehrwichtig"]
+        ]
+    },
+
+    {
+        question: "Was ist dir bei einem Tarif am wichtigsten?",
+        options: [
+            ["💰 Günstiger Preis", "preis"],
+            ["📶 Viel Datenvolumen", "daten"],
+            ["⚡ Schnelles Internet", "speed"],
+            ["🛡️ Gute Gesamtleistung", "gesamt"]
+        ]
+    }
+
+];
+
+
+function startBeratung() {
+
+    document.getElementById("home").classList.add("hidden");
+    document.getElementById("beratung").classList.remove("hidden");
+
+    step = 0;
+
+    answers = {
+        type: "",
+        internet: "",
+        calls: "",
+        priority: ""
+    };
+
+    showQuestion();
+}
+
+
+function showQuestion() {
+
+    const q = questions[step];
+
+    document.getElementById("question").innerText = q.question;
+
+    const options = document.getElementById("options");
+
+    options.innerHTML = "";
+
+    q.options.forEach(option => {
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+        button.innerText = option[0];
+
+        button.onclick = function() {
+            selectOption(option[1]);
+        };
+
+        options.appendChild(button);
+
+    });
+
+}
+
+
+function selectOption(value) {
+
+    if (step === 0) {
+        answers.type = value;
+    }
+
+    if (step === 1) {
+        answers.internet = value;
+    }
+
+    if (step === 2) {
+        answers.calls = value;
+    }
+
+    if (step === 3) {
+        answers.priority = value;
+    }
+
+    step++;
+
+    if (step < questions.length) {
+
+        showQuestion();
+
+    } else {
+
+        showResult();
+
+    }
+
+}
+
+
+function showResult() {
+
+    document.getElementById("question").innerText =
+        "Deine persönliche Tarif-Empfehlung";
+
+    document.getElementById("options").innerHTML = "";
+
+    let recommendation = "";
+
+    if (answers.type === "mobil") {
+
+        if (answers.internet === "sehrviel") {
+            recommendation =
+            "Für dich passt wahrscheinlich ein Mobilfunktarif mit sehr hohem Datenvolumen. Besonders wichtig sind ausreichend Datenvolumen und eine gute Netzabdeckung.";
+        }
+
+        else if (answers.internet === "viel") {
+            recommendation =
+            "Für dich eignet sich wahrscheinlich ein Mobilfunktarif mit hohem Datenvolumen. Damit bist du auch unterwegs beim Streaming und bei Social Media flexibel.";
+        }
+
+        else {
+            recommendation =
+            "Für dich könnte ein kleiner bis mittlerer Mobilfunktarif ausreichen. Wenn du meistens WLAN nutzt, brauchst du unterwegs wahrscheinlich kein riesiges Datenvolumen.";
+        }
+
+    }
+
+    else if (answers.type === "festnetz") {
+
+        recommendation =
+        "Für dich sollte ein passender Festnetz- und Internettarif im Mittelpunkt stehen. Entscheidend sind Geschwindigkeit, Stabilität und die Anzahl der Personen im Haushalt.";
+
+    }
+
+    else {
+
+        recommendation =
+        "Für dich lohnt sich wahrscheinlich eine Kombination aus Mobilfunk und Festnetz. Dabei sollte man beide Verträge gemeinsam betrachten und auf das gesamte Preis-Leistungs-Verhältnis achten.";
+
+    }
+
+
+    document.getElementById("resultBox").classList.remove("hidden");
+
+    document.getElementById("resultBox").innerHTML =
+        "<strong>Unsere Einschätzung:</strong><br><br>" +
+        recommendation +
+        "<br><br>" +
+        "💡 Die endgültige Tarifauswahl sollte immer anhand der aktuell verfügbaren Angebote und deiner persönlichen Situation geprüft werden.";
+
+
+    const restart = document.createElement("button");
+
+    restart.className = "button";
+
+    restart.innerText = "Neue Beratung starten";
+
+    restart.onclick = startBeratung;
+
+    document.getElementById("options").appendChild(restart);
+
+}
+
+
+function goHome() {
+
+    document.getElementById("beratung").classList.add("hidden");
+    document.getElementById("home").classList.remove("hidden");
+
+}
+
+</script>
+
+</body>
+</html>
