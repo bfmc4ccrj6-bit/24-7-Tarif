@@ -1,4 +1,4 @@
-const CACHE = 'kingtarif-v2';
+const CACHE = 'kingtarif-v3';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', event => {
