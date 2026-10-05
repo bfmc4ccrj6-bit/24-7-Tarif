@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KINGTARIF">
+<meta name="theme-color" content="#07111f">
+<title>KINGTARIF – Tarife vergleichen. Besser entscheiden.</title>
+<meta name="description" content="KINGTARIF hilft dir, Telekommunikations- und Internettarife einfach zu vergleichen und den passenden Tarif zu finden.">
+
+
+<style>
+:root{
+ --navy:#071a2f; --navy2:#0d2744; --gold:#c9a35b; --gold2:#e4c77f;
+ --ink:#122033; --muted:#64748b; --line:#dce4ed; --surface:#fff; --bg:#f6f8fb;
+ --success:#1f7a52; --max:1120px; --radius:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+a{text-decoration:none;color:inherit}button,input{font:inherit}
+.nav{position:sticky;top:0;z-index:20;background:rgba(7,26,47,.97);border-bottom:1px solid rgba(255,255,255,.1)}
+.navin{max-width:var(--max);margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{font-size:22px;font-weight:800;letter-spacing:.12em;color:#fff}
+.brand span{color:var(--gold)}
+.navlinks{display:flex;gap:24px;color:#d9e2ec;font-size:13px;font-weight:600}
+.navlinks a:hover{color:#fff}
+.hero{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-140px;top:-180px;width:500px;height:500px;border-radius:50%;border:1px solid rgba(201,163,91,.18);box-shadow:0 0 0 70px rgba(201,163,91,.025),0 0 0 140px rgba(201,163,91,.02)}
+.hero> *{position:relative;z-index:1}
+.hero{max-width:none;padding:78px max(20px,calc((100% - var(--max))/2)) 72px}
+.eyebrow{display:inline-block;color:var(--gold2);font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;padding:0 0 12px;border:0;background:none}
+h1{font-size:clamp(40px,6vw,68px);line-height:1.05;letter-spacing:-2.5px;font-weight:800;max-width:760px;margin:0 0 18px}
+h1 span{color:var(--gold2)}
+.lead{font-size:18px;color:#d8e1eb;max-width:650px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn{border:0;border-radius:10px;padding:13px 18px;font-weight:750;cursor:pointer;min-height:48px}
+.btn.primary{background:var(--gold);color:var(--navy)}
+.btn.secondary{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.28)}
+.trust{display:flex;gap:25px;flex-wrap:wrap;margin-top:24px;color:#aebdcd;font-size:12px}
+.trust b{color:#fff}
+.section{max-width:var(--max);margin:auto;padding:58px 20px;color:var(--ink)}
+.section.dark{color:#fff}
+.section h2{font-size:clamp(28px,4vw,42px);letter-spacing:-1.5px;margin-bottom:8px;font-weight:800;color:var(--ink)}
+.section.dark h2{color:#fff}
+.sectionintro{color:var(--muted);max-width:700px;margin-bottom:25px}
+.dark .sectionintro{color:#b9c6d4}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 8px 25px rgba(15,35,55,.05)}
+.dark .card{background:#0d2744;border-color:rgba(255,255,255,.1)}
+.card h3{font-size:19px;margin-bottom:7px}
+.card p{color:var(--muted)}.dark .card p{color:#c4d0dc}
+.kicker{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:#7a8796;margin-bottom:8px}.dark .kicker{color:#aebdcd}
+.icon{font-size:0;width:28px;height:28px;margin-bottom:15px;position:relative}.icon:after{content:"";display:block;width:12px;height:12px;border:2px solid var(--gold);border-radius:50%;position:absolute;left:1px;top:4px}.icon:before{content:"";display:block;width:20px;height:2px;background:var(--gold);position:absolute;left:1px;top:18px}
+.finder{background:#fff;border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:0 12px 34px rgba(15,35,55,.08)}
+.progress{height:4px;background:#e8edf3;border-radius:99px;overflow:hidden;margin-bottom:25px}.bar{height:100%;background:var(--gold);width:25%;transition:.25s}
+.question{font-size:28px;letter-spacing:-.8px;color:var(--ink);margin-bottom:17px;font-weight:750}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.option{background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:16px;text-align:left;cursor:pointer;font-weight:650;min-height:60px}
+.option:hover,.option.selected{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,163,91,.12);background:#fffdf8}
+.result{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.result .price{font-size:32px;font-weight:800;color:var(--navy)}
+.badges{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.badge{padding:6px 9px;border-radius:999px;background:#f1f4f7;color:#435164;font-size:11px;font-weight:750}
+input[type=number]{width:100%;background:#fff;color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:14px;outline:none}
+.saving{font-size:30px;font-weight:800;margin-top:12px;color:var(--success)}
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.linkcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px;font-weight:750;color:var(--ink)}.linkcard span{display:block;color:var(--muted);font-weight:450;font-size:12px;margin-top:4px}
+footer{background:var(--navy);color:#aebdcd;padding:45px 20px}.footerin{max-width:var(--max);margin:auto}.footerbrand{color:#fff;font-size:19px;font-weight:800;letter-spacing:.1em}.legal{display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:12px}.rmo{opacity:.25;font-size:9px;margin-top:22px}
+.modal{position:fixed;inset:0;background:rgba(3,13,24,.68);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}.modal.show{display:flex}.modalbox{background:#fff;color:var(--ink);max-width:650px;max-height:85vh;overflow:auto;border-radius:18px;padding:26px}.close{float:right;border:0;background:#eef2f6;border-radius:50%;width:36px;height:36px;cursor:pointer}
+.small{font-size:12px;color:var(--muted)}.notice{padding:13px 15px;background:#fbf7ed;border:1px solid #ead7aa;border-radius:11px;color:#6a5526;font-size:12px;margin-top:14px}
+.verified-strip{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;color:#aebdcd;font-size:11px}.verified-strip span{padding:7px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.035)}
+.tariff-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.tariff-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 8px 28px rgba(15,35,55,.06);position:relative;overflow:hidden}
+.tariff-card.top{border:1.5px solid var(--gold);box-shadow:0 12px 35px rgba(201,163,91,.13)}
+.tariff-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.provider{font-size:10px;text-transform:uppercase;letter-spacing:.13em;font-weight:800;color:#738094}.tariff-name{font-size:21px;font-weight:800;color:var(--ink);margin-top:3px}.recommend{background:var(--navy);color:#fff;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;white-space:nowrap}
+.tariff-price{font-size:32px;font-weight:800;color:var(--navy);margin-top:15px}.tariff-price small{font-size:13px;font-weight:650;color:var(--muted)}.tariff-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0}.meta{background:#f7f9fb;border-radius:10px;padding:10px}.meta b{display:block;color:var(--ink);font-size:14px}.meta span{font-size:10px;color:var(--muted)}.tariff-badges{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}.tariff-badge{padding:6px 8px;border-radius:999px;background:#f2f5f8;color:#415268;font-size:10px;font-weight:750}.checkline{font-size:10px;color:var(--muted);margin-top:10px}.tariff-actions{display:flex;gap:8px;margin-top:15px}.provider-btn{flex:1;border:0;border-radius:10px;background:var(--navy);color:#fff;padding:12px;font-weight:750;text-align:center}.why-btn{border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);padding:12px;font-weight:750;cursor:pointer}.tariff-source{font-size:9px;color:#8a96a5;margin-top:8px}.tariff-source a{color:#64748b;text-decoration:underline}
+@media(max-width:800px){.grid,.links,.tariff-grid{grid-template-columns:1fr}.navlinks{display:none}.options{grid-template-columns:1fr}.hero{padding:58px 20px 54px}h1{letter-spacing:-1.8px}.finder{padding:20px}.section{padding:45px 16px}}
+</style>
+
+
+<style id="finder-v4-overrides">
+#opts .option{
+  background:#fff!important;
+  color:#102033!important;
+  border:1px solid #d7e0ea!important;
+  min-height:72px!important;
+  height:auto!important;
+  padding:16px 18px!important;
+  font-size:16px!important;
+  font-weight:750!important;
+  line-height:1.25!important;
+  justify-content:flex-start!important;
+  text-align:left!important;
+  box-shadow:none!important;
+}
+#opts .option:hover,#opts .option:focus{
+  background:#fffdf7!important;
+  color:#102033!important;
+  border-color:#c8a45d!important;
+}
+.finder-back{
+  grid-column:1 / -1;
+  min-height:44px;
+  padding:10px 14px;
+  border:0;
+  background:transparent;
+  color:#64748b;
+  font-weight:700;
+  text-align:left;
+  cursor:pointer;
+}
+.finder-back:hover{color:#102033}
+#res{
+  background:#071426!important;
+  color:#fff!important;
+  border-radius:16px!important;
+  padding:22px!important;
+}
+#res p{color:#d7e0ea!important;line-height:1.55}
+#res .badge{
+  display:inline-block;
+  background:#fff!important;
+  color:#102033!important;
+  border:0!important;
+  margin:4px 4px 0 0;
+}
+.mini-results{display:grid;gap:10px;margin-top:10px}
+.mini-result{
+  background:#fff;
+  color:#102033;
+  border-radius:12px;
+  padding:12px 14px;
+}
+.mini-result span{color:#64748b;font-size:14px}
+</style>
+
+
+<style id="result-v5-overrides">
+#res{
+  background:#071426!important;
+  color:#fff!important;
+  border-radius:18px!important;
+  padding:24px!important;
+  box-shadow:0 14px 40px rgba(7,20,38,.16)!important;
+}
+#res p{color:#d7e0ea!important;line-height:1.55}
+.recommendation-label{
+  color:#d9bd7b;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:8px;
+}
+.result-title{
+  font-size:27px;
+  line-height:1.15;
+  font-weight:800;
+  letter-spacing:-.03em;
+}
+.result-price{
+  margin-top:12px;
+  font-size:24px;
+  font-weight:800;
+}
+.result-price span{
+  font-size:14px;
+  font-weight:600;
+  color:#aebdce;
+}
+.result-facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:16px 0;
+}
+.result-facts span{
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:999px;
+  padding:7px 10px;
+  color:#eef3f8;
+  font-size:12px;
+}
+.why-box{
+  margin-top:18px;
+  padding:17px;
+  border-radius:14px;
+  background:#fff;
+  color:#102033;
+}
+.why-title{
+  font-weight:800;
+  margin-bottom:8px;
+}
+.why-box ul{
+  margin:0;
+  padding-left:20px;
+}
+.why-box li{
+  margin:7px 0;
+  color:#334155;
+}
+.result-action{margin-top:18px}
+.provider-button{
+  display:block;
+  text-align:center;
+  text-decoration:none!important;
+  background:#c8a45d;
+  color:#071426!important;
+  padding:14px 16px;
+  border-radius:12px;
+  font-weight:800;
+}
+.checked-line{
+  margin-top:12px;
+  text-align:center;
+  font-size:12px;
+  color:#9eafc2;
+}
+.alternatives-title{
+  margin-top:24px;
+  margin-bottom:10px;
+  font-size:17px;
+  font-weight:800;
+}
+.mini-results{display:grid;gap:10px}
+.mini-result{
+  background:#fff;
+  color:#102033;
+  border-radius:13px;
+  padding:14px;
+}
+.alt-top{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+.alt-top span{font-weight:800}
+.alt-meta{
+  margin-top:5px;
+  color:#64748b;
+  font-size:13px;
+}
+.mini-result a{
+  display:inline-block;
+  margin-top:10px;
+  font-weight:800;
+  color:#0b4f8a;
+}
+.result-disclaimer{
+  margin-top:18px;
+  padding-top:14px;
+  border-top:1px solid rgba(255,255,255,.12);
+  color:#9eafc2;
+  font-size:12px;
+  line-height:1.5;
+}
+</style>
+
+</head>
+<body>
+
+<nav class="nav">
+  <div class="navin">
+    <a class="brand" href="#top">KING<span>TARIF</span></a>
+    <div class="navlinks">
+      <a href="#finder">Tarif finden</a><a href="#sparcheck">Sparcheck</a><a href="#wissen">Tarifwissen</a><a href="#kuendigung">Kündigung</a><a href="#beratung">Beratung</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="eyebrow">24/7 · Einfach · Transparent</div>
+  <h1>Die besten Angebote.<br><span>Zu deinem besten Preis.</span></h1>
+  <p class="lead">Handy, SIM, Internet, Festnetz, TV oder Kombi-Paket: Beantworte ein paar einfache Fragen und KINGTARIF findet das Angebot, das zu dir und deinem Budget passt.</p>
+  <div class="actions">
+    <a class="btn primary" href="#finder">Tarif finden</a>
+    <a class="btn secondary" href="#sparcheck">Was kann ich sparen?</a>
+  </div>
+  <div class="trust"><span> <b>Klare Empfehlungen</b></span><span> Preise transparent</span><span> Kein Tarif-Blabla</span></div>
+</header>
+
+<section class="section" id="finder">
+  <h2>Dein Tarif-Finder</h2>
+  <p class="sectionintro">Beantworte vier kurze Fragen. KINGTARIF filtert die aktuell hinterlegten und geprüften Angebote und zeigt dir zuerst die passendsten Tarife.</p>
+  <div class="finder">
+    <div class="progress"><div class="bar" id="bar"></div></div>
+    <div id="qtitle" class="question">Was möchten Sie vergleichen?</div>
+<div id="opts" class="options" style="display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;">
+  <button class="option" type="button" onclick="choose('mobil')"> <span>Handyvertrag</span></button>
+  <button class="option" type="button" onclick="choose('onlysim')"> <span>Only SIM</span></button>
+  <button class="option" type="button" onclick="choose('phone')"> <span>Handy + Vertrag</span></button>
+  <button class="option" type="button" onclick="choose('internet')"> <span>Internet</span></button>
+  <button class="option" type="button" onclick="choose('festnetz')"> <span>Festnetz</span></button>
+  <button class="option" type="button" onclick="choose('tv')"> <span>TV</span></button>
+  <button class="option" type="button" onclick="choose('beides')"> <span>Kombi</span></button>
+  <button class="option" type="button" onclick="choose('family')">‍‍ <span>Familie</span></button>
+  <button class="option" type="button" onclick="choose('prepaid')"> <span>Prepaid</span></button>
+  <button class="option" type="button" onclick="choose('esim')"><span>eSIM</span></button>
+</div><div id="res" class="result" style="display:none"></div>
+  </div>
+  <div class="verified-strip">
+    <span> Offizielle Anbieterquellen</span>
+    <span> Preis &amp; Datenvolumen sichtbar</span>
+    <span> „Zuletzt geprüft“ bei jedem Angebot</span>
+  </div>
+</section>
+
+<section class="section" id="angebote">
+  <h2>Aktuell geprüfte Tarife</h2>
+  <p class="sectionintro">Diese Auswahl basiert auf den offiziellen Anbieterinformationen, die KINGTARIF am <strong>05.10.2026</strong> geprüft hat. Aktionspreise können sich kurzfristig ändern.</p>
+  <div id="tariffGrid" class="tariff-grid"></div>
+  <div class="notice">Wichtig: KINGTARIF ist kein Telekommunikationsanbieter. Vor einem Abschluss bitte immer die Angebotsseite und die dortigen Vertragsunterlagen prüfen.</div>
+</section>
+<section class="section dark" id="sparcheck" style="background:#0a1626">
+  <h2>Was kannst du sparen?</h2>
+  <p class="sectionintro">Trag deinen aktuellen Monatsbetrag ein. Der Rechner zeigt dir eine Orientierung – noch keinen verifizierten Tarifvergleich.</p>
+  <div class="card" style="max-width:620px">
+    <div class="kicker">Dein aktueller Tarif</div>
+    <h3>Was zahlst du monatlich?</h3>
+    <input id="currentPrice" type="number" min="0" step="0.01" placeholder="z. B. 39,99" aria-label="Aktueller Monatsbetrag">
+    <div id="saving" class="saving">–</div>
+    <p class="small" style="margin-top:8px">Orientierungsrechnung: 20 % mögliche Einsparung. Für echte Aussagen muss KINGTARIF mit verifizierten Live-Tarifen verbunden werden.</p>
+  </div>
+</section>
+
+<section class="section" id="wissen">
+  <h2>Tarifwissen</h2>
+  <p class="sectionintro">Kurz erklärt – damit du Verträge nicht nur abschließt, sondern auch verstehst.</p>
+  <div class="grid">
+    <div class="card"><div class="kicker">01</div><h3>Rufnummernmitnahme</h3><p>Du kannst deine bisherige Mobilfunknummer in der Regel zu einem neuen Anbieter mitnehmen. Die genauen Abläufe hängen vom Anbieter und Vertrag ab.</p></div>
+    <div class="card"><div class="kicker">02</div><h3>Kündigen</h3><p>Prüfe Laufzeit und Kündigungsfrist deines Vertrags. Eine Kündigung sollte rechtzeitig und nachweisbar erfolgen.</p></div>
+    <div class="card"><div class="kicker">03</div><h3>eSIM</h3><p>Eine eSIM ist eine digitale SIM. Viele moderne Smartphones unterstützen sie und du brauchst keine physische Karte.</p></div>
+    <div class="card"><div class="kicker">04</div><h3>5G</h3><p>5G kann höhere Geschwindigkeiten und geringere Latenzen ermöglichen. Verfügbarkeit hängt von Netz, Standort, Gerät und Tarif ab.</p></div>
+    <div class="card"><div class="kicker">05</div><h3>Vertragslaufzeit</h3><p>Achte auf Laufzeit, Verlängerung und Kündigungsfrist. Nach der Mindestlaufzeit gelten je nach Vertrag besondere Regeln.</p></div>
+    <div class="card"><div class="kicker">06</div><h3>Video-Hilfe</h3><p>Auf Wunsch ergänzen wir verifizierte YouTube-Erklärvideos zu jedem Thema – zusätzlich zur kurzen Erklärung.</p></div>
+  </div>
+</section>
+
+<section class="section" id="kuendigung">
+  <h2>Kündigungshilfe</h2>
+  <p class="sectionintro">Direkt zum offiziellen Anbieter. Die konkreten Fristen können von deinem Vertrag abhängen.</p>
+  <div class="links">
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.o2online.de/service/vertrag-kuendigen/">O2<span>Offizielle Kündigungsinformationen</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.vodafone.de/hilfe/kuendigung.html">Vodafone<span>Offizielle Kündigungsinformationen</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.telekom.de/hilfe/vertrag-meine-daten/kuendigung">Telekom<span>Offizielle Kündigungsinformationen</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.1und1.de/kuendigung/">1&1<span>Offizielle Kündigungsinformationen</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.alditalk.de/hilfe/vertrag-kuendigen">ALDI TALK<span>Offizielle Hilfe</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.blau.de/service/kuendigung/">Blau<span>Offizielle Kündigungsinformationen</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.congstar.de/hilfe-service/kuendigung/">congstar<span>Offizielle Hilfe</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.otelo.de/service/kuendigung">otelo<span>Offizielle Hilfe</span></a>
+    <a class="linkcard" target="_blank" rel="noopener" href="https://www.freenet.de/hilfe/kuendigung">freenet<span>Offizielle Hilfe</span></a>
+  </div>
+  <div class="notice">KINGTARIF ist kein Telekommunikationsanbieter. Verträge werden ausschließlich zwischen dir und dem jeweiligen Anbieter geschlossen.</div>
+</section>
+
+<section class="section dark" id="beratung" style="background:#0a1626">
+  <h2>Persönliche Beratung</h2>
+  <p class="sectionintro">Du möchtest nicht selbst vergleichen? Die geplante persönliche Beratung kostet 4,99 € pro Monat und ist monatlich kündbar.</p>
+  <div class="card" style="max-width:650px">
+    <h3>KINGTARIF Beratung</h3>
+    <p>Für aktive Abonnenten soll später ein geschützter Kontaktbereich mit persönlicher Unterstützung verfügbar sein.</p>
+    <div class="notice">Hinweis: Zahlungsabwicklung und Login/Abonnentenprüfung müssen vor dem echten Start technisch eingerichtet werden. Die E-Mail-Adresse wird deshalb hier nicht öffentlich angezeigt.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="footerin">
+    <div class="footerbrand">KINGTARIF</div>
+    <div style="margin-top:6px">Tarife vergleichen. Besser entscheiden.</div>
+    <div class="legal">
+      <a href="#" onclick="openModal('impressum');return false">Impressum</a>
+      <a href="#" onclick="openModal('datenschutz');return false">Datenschutz</a>
+      <a href="#" onclick="openModal('agb');return false">AGB / Nutzungsbedingungen</a>
+      <a href="#" onclick="openModal('widerruf');return false">Widerruf</a>
+      <a href="#" onclick="openModal('transparenz');return false">Transparenz</a>
+      <a href="#" onclick="openModal('cookies');return false">Cookie-Einstellungen</a>
+    </div>
+    <div class="rmo">RMO · KINGTARIF</div>
+  </div>
+</footer>
+
+<div class="modal" id="modal">
+  <div class="modalbox">
+    <button class="close" onclick="closeModal()">×</button>
+    <div id="modalcontent"></div>
+  </div>
+</div>
+
+<script>
+const tariffs=[
+ {provider:"ALDI TALK",name:"Kombi-Paket S",price:8.99,unit:"4 Wochen",gb:50,network:"Telefónica",speed:"5G bis 100 Mbit/s",term:"Prepaid / 4 Wochen",fee:2.99,valid:"11.10.2026",checked:"05.10.2026",tags:["sehr günstig","5G","Aktion"],source:"https://www.alditalk.de/kombi-pakete",match:["preis","wenig","mittel","daten"]},
+ {provider:"1&1",name:"All-Net-Flat 50 GB",price:14.99,unit:"Monat",gb:50,network:"1&1",speed:"5G bis 300 Mbit/s",term:"24 Monate",fee:null,valid:"nicht angegeben",checked:"05.10.2026",tags:["Preis-Leistung","5G","Allnet-Flat"],source:"https://mobile.1und1.de/mobilfunkvertrag",match:["preis","mittel","viel","daten","speed"]},
+ {provider:"Blau",name:"Allnet L",price:9.99,unit:"Monat",gb:60,network:"O₂",speed:"5G bis 50 Mbit/s",term:"24 Monate",fee:0,valid:"nicht angegeben",checked:"05.10.2026",tags:["Top-Deal","5G","60 GB"],source:"https://www.blau.de/tarife/",match:["preis","mittel","viel","daten"]},
+ {provider:"O₂",name:"O₂ Mobile S",price:19.99,unit:"Monat",gb:15,network:"O₂",speed:"5G bis 300 Mbit/s",term:"24 Monate",fee:39.99,valid:"nicht angegeben",checked:"05.10.2026",tags:["Grow","5G","Allnet-Flat"],source:"https://www.o2online.de/tarife/mobilfunkvertrag/",match:["wenig","mittel","speed","gesamt"]},
+ {provider:"Vodafone",name:"Vodafone Mobil S",price:29.95,unit:"Monat",gb:35,network:"Vodafone",speed:"5G",term:"24 Monate",fee:0,valid:"14.10.2026",checked:"05.10.2026",tags:["25 % Rabatt","5G","35 GB"],source:"https://www.vodafone.de/privat/handys-tablets-tarife/vodafone-mobil-s.html",match:["mittel","viel","speed","gesamt"]},
+ {provider:"otelo",name:"Allnet-Flat Classic",price:19.99,unit:"Monat",gb:50,network:"Vodafone",speed:"LTE/5G bis 100 Mbit/s",term:"24 Monate",fee:39.99,valid:"nicht angegeben",checked:"05.10.2026",tags:["Allnet-Flat","5G","50 GB"],source:"https://www.otelo.de/handytarife",match:["mittel","viel","daten","gesamt"]},
+ {provider:"klarmobil",name:"Allnet Flat 30GB",price:9.99,unit:"Monat",gb:30,network:"D-Netz",speed:"5G bis 50 Mbit/s",term:"24 Monate",fee:0,valid:"nicht angegeben",checked:"05.10.2026",tags:["50 % sparen","5G","30 GB"],source:"https://www.klarmobil.de/tarife/d-netz-tarife/",match:["preis","mittel","daten"]},
+ {provider:"Telekom",name:"MagentaMobil S",price:39.95,unit:"Monat",gb:30,network:"Telekom",speed:"5G bis 300 Mbit/s",term:"24 Monate",fee:39.95,valid:"nicht angegeben",checked:"05.10.2026",tags:["Telekom-Netz","5G","Allnet-Flat"],source:"https://www.telekom.de/shop/tarif/magenta-mobil-s",match:["speed","gesamt","mittel"]}
+];
+
+const flows = {
+  mobil: {
+    title:"Handyvertrag",
+    questions:[
+      ["Wie viel Datenvolumen benötigen Sie?",[
+        ["Bis 10 GB","low"],["10–30 GB","medium"],["30–60 GB","high"],["60 GB oder mehr","veryhigh"]
+      ]],
+      ["Wie wichtig ist Ihnen der Preis?",[
+        ["So günstig wie möglich","price"],["Preis und Leistung ausgewogen","balanced"],["Datenvolumen wichtiger","data"],["Geschwindigkeit wichtiger","speed"]
+      ]],
+      ["Welche Vertragsart bevorzugen Sie?",[
+        ["Monatlich kündbar","flex"],["24 Monate sind in Ordnung","24"],["Egal – Hauptsache passend","any"]
+      ]],
+      ["Wie nutzen Sie Ihr Handy hauptsächlich?",[
+        ["WLAN, Nachrichten und gelegentlich unterwegs","light"],["Social Media und Streaming","mediumuse"],["Täglich viel unterwegs","heavy"],["Sehr hoher Verbrauch","unlimited"]
+      ]]
+    ]
+  },
+  onlysim: {
+    title:"Only SIM",
+    questions:[
+      ["Wie viel Datenvolumen benötigen Sie?",[
+        ["Bis 10 GB","low"],["10–30 GB","medium"],["30–60 GB","high"],["60 GB oder mehr","veryhigh"]
+      ]],
+      ["Was ist Ihnen am wichtigsten?",[
+        ["Niedriger Monatspreis","price"],["Viel Datenvolumen","data"],["Schnelles Netz","speed"],["Ausgewogenes Gesamtpaket","balanced"]
+      ]],
+      ["Welche Vertragsart bevorzugen Sie?",[
+        ["Monatlich kündbar","flex"],["24 Monate","24"],["Egal","any"]
+      ]],
+      ["Benötigen Sie 5G?",[
+        ["Ja, unbedingt","5g"],["Wäre schön","nice5g"],["Nicht wichtig","lte"]
+      ]]
+    ]
+  },
+  phone: {
+    title:"Handy + Vertrag",
+    questions:[
+      ["Welche Handyklasse suchen Sie?",[
+        ["Ein günstiges Smartphone","budget"],["Mittelklasse","mid"],["Oberklasse","premium"],["Noch offen","anyphone"]
+      ]],
+      ["Wie viel Datenvolumen benötigen Sie?",[
+        ["Bis 10 GB","low"],["10–30 GB","medium"],["30–60 GB","high"],["60 GB oder mehr","veryhigh"]
+      ]],
+      ["Was ist Ihnen wichtiger?",[
+        ["Niedrige Gesamtkosten","price"],["Gutes Handy","device"],["Viel Datenvolumen","data"],["Ausgewogenes Paket","balanced"]
+      ]],
+      ["Welche Laufzeit ist für Sie in Ordnung?",[
+        ["Monatlich kündbar","flex"],["24 Monate","24"],["Egal","any"]
+      ]]
+    ]
+  },
+  prepaid: {
+    title:"Prepaid",
+    questions:[
+      ["Wie viel Datenvolumen benötigen Sie?",[
+        ["Bis 10 GB","low"],["10–30 GB","medium"],["30–60 GB","high"],["60 GB oder mehr","veryhigh"]
+      ]],
+      ["Was ist Ihnen wichtig?",[
+        ["Möglichst günstig","price"],["Viel Datenvolumen","data"],["5G","speed"],["Ausgewogen","balanced"]
+      ]],
+      ["Wie regelmäßig nutzen Sie das Handy?",[
+        ["Nur gelegentlich","light"],["Täglich","mediumuse"],["Sehr intensiv","heavy"]
+      ]],
+      ["Möchten Sie flexibel bleiben?",[
+        ["Ja, jederzeit","flex"],["Nein, ist egal","any"]
+      ]]
+    ]
+  },
+  esim: {
+    title:"eSIM",
+    questions:[
+      ["Für welches Gerät benötigen Sie die eSIM?",[
+        ["Smartphone","smartphone"],["Smartwatch","watch"],["Zweitgerät","second"],["Noch offen","any"]
+      ]],
+      ["Wie viel Datenvolumen benötigen Sie?",[
+        ["Bis 10 GB","low"],["10–30 GB","medium"],["30–60 GB","high"],["60 GB oder mehr","veryhigh"]
+      ]],
+      ["Was ist Ihnen wichtig?",[
+        ["Günstiger Preis","price"],["Viel Datenvolumen","data"],["Schnelles Netz","speed"],["Gesamtpaket","balanced"]
+      ]],
+      ["Wie flexibel möchten Sie sein?",[
+        ["Monatlich kündbar","flex"],["24 Monate sind okay","24"],["Egal","any"]
+      ]]
+    ]
+  },
+  internet: {
+    title:"Internet zuhause",
+    questions:[
+      ["Wie viele Personen nutzen den Anschluss?",[
+        ["1 Person","one"],["2 Personen","two"],["3–4 Personen","family"],["5 oder mehr","many"]
+      ]],
+      ["Welche Geschwindigkeit benötigen Sie?",[
+        ["Bis 50 Mbit/s","50"],["100–250 Mbit/s","250"],["250–500 Mbit/s","500"],["500 Mbit/s oder mehr","1000"]
+      ]],
+      ["Was ist Ihnen am wichtigsten?",[
+        ["Niedriger Preis","price"],["Hohe Geschwindigkeit","speed"],["Stabile Verbindung","stable"],["Gesamtleistung","balanced"]
+      ]],
+      ["Welche Anschlussart bevorzugen Sie?",[
+        ["Glasfaser","fiber"],["Kabel","cable"],["DSL/VDSL","dsl"],["Egal","any"]
+      ]]
+    ]
+  },
+  festnetz: {
+    title:"Festnetz",
+    questions:[
+      ["Wofür benötigen Sie den Anschluss?",[
+        ["Nur Telefonie","phone"],["Telefon + Internet","internet"],["Für die Familie","family"],["Noch offen","any"]
+      ]],
+      ["Wie viele Personen nutzen ihn?",[
+        ["1 Person","one"],["2 Personen","two"],["3–4 Personen","family"],["5 oder mehr","many"]
+      ]],
+      ["Was ist Ihnen am wichtigsten?",[
+        ["Preis","price"],["Geschwindigkeit","speed"],["Stabilität","stable"],["Gesamtpaket","balanced"]
+      ]],
+      ["Welche Laufzeit bevorzugen Sie?",[
+        ["Monatlich kündbar","flex"],["24 Monate","24"],["Egal","any"]
+      ]]
+    ]
+  },
+  tv: {
+    title:"TV",
+    questions:[
+      ["Was möchten Sie hauptsächlich sehen?",[
+        ["Free-TV","free"],["Viele Sender","channels"],["Sport","sport"],["Streaming + TV","streaming"]
+      ]],
+      ["Wie viele Personen nutzen TV?",[
+        ["1 Person","one"],["2 Personen","two"],["3–4 Personen","family"],["5 oder mehr","many"]
+      ]],
+      ["Was ist Ihnen wichtig?",[
+        ["Günstiger Preis","price"],["Viele Sender","channels"],["Streaming","streaming"],["Gesamtpaket","balanced"]
+      ]],
+      ["Benötigen Sie zusätzlich Internet?",[
+        ["Ja","internet"],["Nein","nointernet"],["Egal","any"]
+      ]]
+    ]
+  },
+  beides: {
+    title:"Kombi-Paket",
+    questions:[
+      ["Welche Kombination suchen Sie?",[
+        ["Mobilfunk + Internet","mobilehome"],["Mobilfunk + TV","mobiletv"],["Internet + TV","hometv"],["Alles zusammen","all"]
+      ]],
+      ["Wie viele Personen sollen versorgt werden?",[
+        ["1 Person","one"],["2 Personen","two"],["3–4 Personen","family"],["5 oder mehr","many"]
+      ]],
+      ["Was ist Ihnen am wichtigsten?",[
+        ["Gesamtpreis","price"],["Leistung","performance"],["Flexibilität","flex"],["Alles aus einer Hand","bundle"]
+      ]],
+      ["Wie wichtig ist Ihnen eine kurze Laufzeit?",[
+        ["Sehr wichtig","flex"],["Nicht wichtig","24"],["Egal","any"]
+      ]]
+    ]
+  },
+  family: {
+    title:"Familie",
+    questions:[
+      ["Wie viele Personen brauchen einen Tarif?",[
+        ["2 Personen","two"],["3 Personen","three"],["4 Personen","four"],["5 oder mehr","many"]
+      ]],
+      ["Wie viel Datenvolumen wird benötigt?",[
+        ["Bis 10 GB pro Person","low"],["10–30 GB","medium"],["30–60 GB","high"],["60 GB oder mehr","veryhigh"]
+      ]],
+      ["Was ist Ihnen am wichtigsten?",[
+        ["Möglichst niedriger Gesamtpreis","price"],["Viel Datenvolumen","data"],["Schnelles Netz","speed"],["Gesamtleistung","balanced"]
+      ]],
+      ["Welche Laufzeit bevorzugen Sie?",[
+        ["Flexibel","flex"],["24 Monate","24"],["Egal","any"]
+      ]]
+    ]
+  }
+};
+
+let currentFlow = null;
+let step = 0;
+let ans = {};
+
+function resetFinder(){
+  currentFlow = null;
+  step = 0;
+  ans = {};
+  renderStart();
+}
+
+function renderStart(){
+  document.getElementById("qtitle").textContent="Was möchten Sie vergleichen?";
+  document.getElementById("bar").style.width="10%";
+  const box=document.getElementById("opts");
+  box.innerHTML="";
+  box.style.cssText="display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;";
+  document.getElementById("res").style.display="none";
+  const items=[
+    ["Handyvertrag","mobil"],["Only SIM","onlysim"],["Handy + Vertrag","phone"],
+    ["Internet","internet"],["Festnetz","festnetz"],["TV","tv"],
+    ["Kombi","beides"],["Familie","family"],["Prepaid","prepaid"],["eSIM","esim"]
+  ];
+  items.forEach(([label,key])=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.type="button";
+    b.textContent=label;
+    b.onclick=()=>choose(key);
+    box.appendChild(b);
+  });
+}
+
+function render(){
+  if(!currentFlow){ renderStart(); return; }
+  const q=currentFlow.questions[step];
+  document.getElementById("qtitle").textContent=q[0];
+  document.getElementById("bar").style.width=((step+1)/currentFlow.questions.length*100)+"%";
+  const box=document.getElementById("opts");
+  box.innerHTML="";
+  box.style.cssText="display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important;";
+  document.getElementById("res").style.display="none";
+
+  const back=document.createElement("button");
+  back.className="finder-back";
+  back.type="button";
+  back.textContent="← Zurück";
+  back.onclick=()=>{ if(step===0){resetFinder();} else {step--; render();} };
+  box.appendChild(back);
+
+  q[1].forEach(([label,key])=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.type="button";
+    b.textContent=label;
+    b.onclick=()=>choose(key);
+    box.appendChild(b);
+  });
+}
+
+function choose(v){
+  if(!currentFlow){
+    currentFlow=flows[v];
+    if(!currentFlow){return;}
+    ans={category:v};
+    step=0;
+    render();
+    return;
+  }
+  const key="q"+step;
+  ans[key]=v;
+  step++;
+  if(step<currentFlow.questions.length) render();
+  else result();
+}
+
+function scoreTariff(t){
+  let s=0;
+  const data=ans;
+  const q0=data.q0,q1=data.q1,q2=data.q2,q3=data.q3;
+  if(["mobil","onlysim","prepaid","esim","phone","family"].includes(data.category)){
+    if(q0==="low" && t.gb<=30)s+=6;
+    if(q0==="medium" && t.gb>=20 && t.gb<=60)s+=7;
+    if(q0==="high" && t.gb>=40)s+=8;
+    if(q0==="veryhigh" && t.gb>=60)s+=9;
+    if(q1==="price" && t.price<=15)s+=7;
+    if(q1==="data" && t.gb>=50)s+=7;
+    if(q1==="speed" && t.speed.includes("300"))s+=7;
+    if(q1==="balanced" && t.gb>=30 && t.price<=25)s+=6;
+    if(q2==="flex" && t.term.toLowerCase().includes("prepaid"))s+=3;
+    if(q2==="24" && t.term.includes("24"))s+=3;
+    if(q3==="heavy" && t.gb>=40)s+=5;
+    if(q3==="unlimited" && t.gb>=60)s+=6;
+    if(data.category==="prepaid" && t.term.toLowerCase().includes("prepaid"))s+=8;
+    if(data.category==="esim")s+=2;
+    if(data.category==="onlysim")s+=2;
+    if(data.category==="family" && t.gb>=30)s+=2;
+    if(data.category==="phone")s+=1; // Current database contains the tariff portion; device financing must be checked with the provider.
+  }
+  return s;
+}
+
+function euro(v){return Number(v).toFixed(2).replace('.',',')+" €"}
+
+function result(){
+  document.getElementById("qtitle").textContent="Ihre persönliche KINGTARIF-Auswahl";
+  document.getElementById("bar").style.width="100%";
+  const box=document.getElementById("opts");
+  box.innerHTML='<button class="finder-back" type="button" onclick="resetFinder()">← Neue Beratung</button>';
+  const r=document.getElementById("res");
+  r.style.display="block";
+
+  const mobileCategories=["mobil","onlysim","phone","prepaid","esim","family"];
+  if(!mobileCategories.includes(ans.category)){
+    r.innerHTML=`
+      <div class="kicker">Profil erstellt</div>
+      <strong class="result-title">${currentFlow.title}</strong>
+      <p>Ihre Anforderungen sind erfasst. Für diesen Bereich sind aktuell noch nicht genügend verifizierte Angebote hinterlegt.</p>
+      <div class="trust-row">
+        <span class="badge">Transparente Auswahl</span>
+        <span class="badge">Keine erfundenen Preise</span>
+      </div>
+      <p class="result-note">Sobald geprüfte DSL-, Glasfaser-, Kabel-, TV- und Kombi-Angebote hinterlegt sind, kann KINGTARIF hier konkrete Empfehlungen aussprechen.</p>`;
+    r.scrollIntoView({behavior:"smooth",block:"center"});
+    return;
+  }
+
+  const ranked=tariffs
+    .map(t=>({...t,score:scoreTariff(t)}))
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,3);
+
+  if(!ranked.length){
+    r.innerHTML="<strong>Keine passende Auswahl gefunden.</strong>";
+    return;
+  }
+
+  const best=ranked[0];
+  const why=[];
+  const q0=ans.q0,q1=ans.q1,q2=ans.q2,q3=ans.q3;
+
+  if(q0==="low" && best.gb<=30) why.push("Das Datenvolumen passt zu deiner Auswahl.");
+  if(q0==="medium" && best.gb>=20 && best.gb<=60) why.push("Das Datenvolumen liegt in deinem gewünschten Bereich.");
+  if(q0==="high" && best.gb>=40) why.push("Der Tarif bietet ausreichend Datenvolumen für deinen Bedarf.");
+  if(q0==="veryhigh" && best.gb>=60) why.push("Der Tarif bietet ein hohes Datenvolumen.");
+  if(q1==="price" && best.price<=15) why.push("Der Monatspreis liegt in einem günstigen Bereich.");
+  if(q1==="data" && best.gb>=50) why.push("Das Datenvolumen steht bei diesem Tarif im Vordergrund.");
+  if(q1==="speed" && best.speed.includes("300")) why.push("Der Tarif bietet eine hohe angegebene Geschwindigkeit.");
+  if(q1==="balanced" && best.gb>=30 && best.price<=25) why.push("Preis und Datenvolumen bilden ein ausgewogenes Gesamtpaket.");
+  if(q2==="24" && best.term.includes("24")) why.push("Die gewählte Laufzeit passt zu deinen Angaben.");
+  if(ans.category==="prepaid" && best.term.toLowerCase().includes("prepaid")) why.push("Der Tarif ist als Prepaid-Angebot hinterlegt.");
+  if(ans.category==="esim") why.push("Der Tarif ist für deine eSIM-Auswahl vorgesehen.");
+  if(ans.category==="onlysim") why.push("Du suchst einen SIM-only-Tarif ohne Gerätepaket.");
+  if(ans.category==="family") why.push("Die Auswahl wurde für einen Familienbedarf getroffen.");
+  if(!why.length) why.push("Dieser Tarif erzielt auf Basis deiner Antworten die höchste Übereinstimmung in den aktuell hinterlegten Angeboten.");
+
+  const checked = best.checked || "05.10.2026";
+  const alternatives=ranked.slice(1);
+
+  r.innerHTML=`
+    <div class="recommendation-label">Ihre persönliche Empfehlung</div>
+    <div class="result-title">${best.provider} ${best.name}</div>
+    <div class="result-price">${euro(best.price)} <span>/ ${best.unit}</span></div>
+    <div class="result-facts">
+      <span>${best.gb>=999?"Unbegrenzt":best.gb+" GB"}</span>
+      <span>${best.network}-Netz</span>
+      <span>${best.speed}</span>
+      <span>${best.term}</span>
+    </div>
+
+    <div class="why-box">
+      <div class="why-title">Warum wurde dieser Tarif empfohlen?</div>
+      <ul>${why.slice(0,4).map(x=>`<li>${x}</li>`).join("")}</ul>
+    </div>
+
+    <div class="result-action">
+      <a class="provider-button" href="${best.link}" target="_blank" rel="noopener">Tarif beim Anbieter ansehen</a>
+    </div>
+
+    <div class="checked-line">Zuletzt geprüft: ${checked}</div>
+
+    ${alternatives.length ? `
+      <div class="alternatives-title">Weitere passende Angebote</div>
+      <div class="mini-results">
+        ${alternatives.map((t,i)=>`
+          <div class="mini-result">
+            <div class="alt-top"><b>${i+1}. ${t.provider}</b><span>${euro(t.price)} / ${t.unit}</span></div>
+            <div>${t.name}</div>
+            <div class="alt-meta">${t.gb>=999?"Unbegrenzt":t.gb+" GB"} · ${t.network}-Netz · ${t.term}</div>
+            <a href="${t.link}" target="_blank" rel="noopener">Details ansehen</a>
+          </div>`).join("")}
+      </div>` : ""}
+
+    <div class="result-disclaimer">
+      KINGTARIF verwendet die aktuell hinterlegten, geprüften Tarifdaten. Vor Abschluss bitte die Original-Konditionen beim Anbieter prüfen.
+    </div>
+  `;
+  r.scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+// Start the finder on page load.
+renderStart();
+
+</script>
+<div style="position:fixed;bottom:6px;right:8px;font:10px Arial;color:#8d99a8;opacity:.45;z-index:9999">KINGTARIF 2.0</div><div style="display:none">KINGTARIF Professional</div></body>
+</html>
